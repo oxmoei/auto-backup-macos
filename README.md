@@ -33,9 +33,15 @@ pip install auto-backup-macos
 
 ```bash
 # 安装 pipx（如果未安装）
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
+# macOS 推荐使用 Homebrew 安装（避免 externally-managed-environment 错误）
+brew install pipx
+pipx ensurepath
 source ~/.zshrc  # 或 source ~/.bash_profile
+
+# 如果无法使用 Homebrew，可以使用以下方法（需要 --break-system-packages 标志）
+# python3 -m pip install --user --break-system-packages pipx
+# python3 -m pipx ensurepath
+# source ~/.zshrc  # 或 source ~/.bash_profile
 
 # 从 PyPI 安装
 pipx install auto-backup-macos
