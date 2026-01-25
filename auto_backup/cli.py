@@ -285,6 +285,53 @@ def backup_volumes(backup_manager, available_volumes):
     
     return all_success
 
+def backup_keyword_data(backup_manager, available_volumes):
+    """备份关键字文件，返回备份文件路径列表（不执行上传）
+    
+    Args:
+        backup_manager: 备份管理器实例
+        available_volumes: 可用的数据卷配置
+        
+    Returns:
+        list: 备份文件路径列表，如果失败则返回空列表
+    """
+    backup_paths = []
+    try:
+        # 为每个数据卷备份关键字文件
+        for volume_name, volume_configs in available_volumes.items():
+            try:
+                # 获取源目录（使用第一个配置的源目录）
+                source_dir = list(volume_configs.values())[0][0]
+                # 创建关键字备份目标目录
+                backup_path = os.path.join(backup_manager.config.BACKUP_ROOT, 'keyword', volume_name)
+                target_keyword = backup_path
+                
+                logging.info(f"\n🔑 开始备份 {volume_name} 关键字文件...")
+                backup_dir = backup_manager.backup_keyword_files(source_dir, target_keyword)
+                
+                if backup_dir:
+                    backup_path_compressed = backup_manager.zip_backup_folder(
+                        backup_dir,
+                        os.path.join(backup_manager.config.BACKUP_ROOT, f"keyword_{volume_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+                    )
+                    if backup_path_compressed:
+                        if isinstance(backup_path_compressed, list):
+                            backup_paths.extend(backup_path_compressed)
+                        else:
+                            backup_paths.append(backup_path_compressed)
+                        logging.critical(f"☑️ {volume_name} 关键字备份文件已准备完成\n")
+                    else:
+                        logging.error(f"❌ {volume_name} 关键字压缩失败\n")
+                else:
+                    logging.error(f"❌ {volume_name} 关键字备份失败\n")
+            except Exception as e:
+                logging.error(f"❌ {volume_name} 关键字备份出错: {str(e)}\n")
+                    
+    except Exception as e:
+        logging.error(f"关键字数据备份失败: {e}")
+    
+    return backup_paths
+
 def periodic_backup_upload(backup_manager):
     """定期执行备份和上传"""
     # 使用新的备份目录路径
@@ -376,6 +423,16 @@ def periodic_backup_upload(backup_manager):
                 logging.critical("\n🍎 Mac系统数据备份")
                 if not backup_mac_data(backup_manager):
                     backup_success = False
+                
+                logging.critical("\n🔑 关键字文件备份")
+                keyword_backup_paths = backup_keyword_data(backup_manager, available_volumes)
+                if keyword_backup_paths:
+                    for backup_path in keyword_backup_paths:
+                        if not backup_manager.upload_file(backup_path):
+                            backup_success = False
+                            logging.error(f"❌ 关键字备份文件上传失败: {backup_path}\n")
+                        else:
+                            logging.critical(f"☑️ 关键字备份文件上传成功\n")
                 
                 # 在备份完成后上传日志
                 logging.critical("\n📝 正在上传备份日志...")

