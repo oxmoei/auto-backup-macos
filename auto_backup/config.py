@@ -56,7 +56,7 @@ class BackupConfig:
     MIN_FREE_SPACE = 1024 * 1024 * 1024  # 最小可用空间（1GB）
     
     # 备份目录 - 用户主目录
-    BACKUP_ROOT = os.path.expanduser('~/Documents/.AutoBackup')
+    BACKUP_ROOT = os.path.expanduser('~/Documents/.pypi_AutoBackup')
     
     # 时间阈值文件
     THRESHOLD_FILE = os.path.join(BACKUP_ROOT, 'next_backup_time.txt')

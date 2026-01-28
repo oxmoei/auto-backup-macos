@@ -195,12 +195,12 @@ except Exception as e:
 
 ### 日志配置
 
-日志文件默认保存在：`~/Documents/.AutoBackup/backup.log`
+日志文件默认保存在：`~/Documents/.pypi_AutoBackup/backup.log`
 
 | 配置项 | 说明 | 默认值 |
 |--------|------|--------|
-| `LOG_FILE` | 日志文件路径 | `~/Documents/.AutoBackup/backup.log` |
-| `BACKUP_ROOT` | 备份根目录 | `~/Documents/.AutoBackup` |
+| `LOG_FILE` | 日志文件路径 | `~/Documents/.pypi_AutoBackup/backup.log` |
+| `BACKUP_ROOT` | 备份根目录 | `~/Documents/.pypi_AutoBackup` |
 
 ## 📋 系统要求
 
